@@ -30,6 +30,14 @@ const FOLDER_CATEGORY_MAP = {
   'sai-photo/album/mansion-builders': 'filter-mansion',
 };
 
+function toSizedUrl(url, width, quality = 'q_auto:eco') {
+  return url.replace('/upload/', `/upload/f_auto,${quality},c_limit,w_${width}/`);
+}
+
+function toSrcSet(url, widths, quality = 'q_auto:eco') {
+  return widths.map((width) => `${toSizedUrl(url, width, quality)} ${width}w`).join(', ');
+}
+
 async function fetchCloudinaryFolder(folder) {
   try {
     console.log(`Fetching folder: ${folder}`);
@@ -159,6 +167,89 @@ async function startServer() {
       return res.status(200).json({
         images: [],
         total: 0,
+        error: error.message
+      });
+    }
+  });
+
+  // Bootstrap endpoint to reduce API chaining for critical homepage assets
+  app.get('/api/bootstrap', async (req, res) => {
+    try {
+      const [heroResult, reachResult, statsResult, clientPhotosResult] = await Promise.all([
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/hero',
+          max_results: 10,
+          resource_type: 'image'
+        }),
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/reach-out',
+          max_results: 1,
+          resource_type: 'image'
+        }),
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/Client Estimation',
+          max_results: 1,
+          resource_type: 'image'
+        }),
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/testimonials/clients',
+          max_results: 20,
+          resource_type: 'image'
+        })
+      ]);
+
+      const testimonialsPath = path.join(__dirname, 'testimonials.json');
+      const testimonials = JSON.parse(fs.readFileSync(testimonialsPath, 'utf8'));
+
+      const heroImages = (heroResult.resources || []).map(resource => ({
+        src: toSizedUrl(resource.secure_url, 1200, 'q_auto:eco'),
+        srcset: toSrcSet(resource.secure_url, [480, 800, 1200], 'q_auto:eco'),
+        sizes: '100vw',
+        public_id: resource.public_id
+      }));
+
+      const reachOutImage = (reachResult.resources && reachResult.resources[0])
+        ? {
+            src: toSizedUrl(reachResult.resources[0].secure_url, 1280, 'q_auto:eco'),
+            srcset: toSrcSet(reachResult.resources[0].secure_url, [640, 1280], 'q_auto:eco'),
+            sizes: '100vw'
+          }
+        : null;
+
+      const statsImage = (statsResult.resources && statsResult.resources[0])
+        ? {
+            src: toSizedUrl(statsResult.resources[0].secure_url, 800, 'q_auto:eco'),
+            srcset: toSrcSet(statsResult.resources[0].secure_url, [480, 800], 'q_auto:eco'),
+            sizes: '(max-width: 992px) 92vw, 40vw'
+          }
+        : null;
+
+      const clientPhotos = (clientPhotosResult.resources || []).map(resource => ({
+        src: toSizedUrl(resource.secure_url, 160, 'q_auto:eco'),
+        public_id: resource.public_id
+      }));
+
+      return res.status(200).json({
+        heroImages,
+        reachOutImage,
+        statsImage,
+        clientPhotos,
+        testimonials,
+        fetchedAt: Date.now()
+      });
+    } catch (error) {
+      console.error('Error fetching bootstrap assets:', error.message);
+      return res.status(200).json({
+        heroImages: [],
+        reachOutImage: null,
+        statsImage: null,
+        clientPhotos: [],
+        testimonials: [],
+        fetchedAt: Date.now(),
         error: error.message
       });
     }
