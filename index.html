@@ -47,6 +47,37 @@
   
   <!-- DNS Prefetch for additional resources -->
   <link rel="dns-prefetch" href="//res.cloudinary.com">
+
+  <script>
+    // Start critical API fetch early to reduce sequential chain delay
+    window.__bootstrapDataPromise = fetch('/api/bootstrap')
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (!data) return null;
+        window.__bootstrapData = data;
+
+        // Preload first hero image as soon as URL is known
+        if (Array.isArray(data.heroImages) && data.heroImages.length > 0) {
+          const preload = document.createElement('link');
+          preload.rel = 'preload';
+          preload.as = 'image';
+          preload.href = data.heroImages[0].src;
+          document.head.appendChild(preload);
+        }
+
+        return data;
+      })
+      .catch(() => null);
+
+    // Warm fallback API requests early as well (used only if bootstrap lacks data)
+    window.__testimonialsPromise = fetch('/api/testimonials')
+      .then((response) => response.ok ? response.json() : { testimonials: [] })
+      .catch(() => ({ testimonials: [] }));
+
+    window.__clientPhotosPromise = fetch('/api/client-photos')
+      .then((response) => response.ok ? response.json() : { images: [] })
+      .catch(() => ({ images: [] }));
+  </script>
   
   <script type="application/ld+json">
     {
@@ -771,8 +802,10 @@
 
     async function loadHeroImages() {
       try {
-        const response = await fetch('/api/hero');
-        const data = await response.json();
+        const bootData = window.__bootstrapData || await (window.__bootstrapDataPromise || Promise.resolve(null));
+        const data = (bootData && Array.isArray(bootData.heroImages) && bootData.heroImages.length > 0)
+          ? { images: bootData.heroImages }
+          : await fetch('/api/hero').then(response => response.json());
         
         if (data.images && data.images.length > 0) {
           heroImages = data.images;
@@ -829,8 +862,13 @@
 
   <!-- Load Reach Out Background -->
   <script>
-    fetch('/api/reach-out-bg')
-      .then(response => response.json())
+    Promise.resolve(window.__bootstrapData || window.__bootstrapDataPromise)
+      .then(bootData => {
+        if (bootData && bootData.reachOutImage) {
+          return { image: bootData.reachOutImage };
+        }
+        return fetch('/api/reach-out-bg').then(response => response.json());
+      })
       .then(data => {
         if (data.image) {
           const img = document.getElementById('reach-out-bg');
@@ -845,8 +883,13 @@
 
   <!-- Load Stats Section Client Image -->
   <script>
-    fetch('/api/stats-clients')
-      .then(response => response.json())
+    Promise.resolve(window.__bootstrapData || window.__bootstrapDataPromise)
+      .then(bootData => {
+        if (bootData && bootData.statsImage) {
+          return { image: bootData.statsImage };
+        }
+        return fetch('/api/stats-clients').then(response => response.json());
+      })
       .then(data => {
         if (data.image) {
           const img = document.getElementById('stats-client-img');
@@ -894,13 +937,24 @@
 
     async function loadTestimonials() {
       try {
-        const [testimonialsRes, clientPhotosRes] = await Promise.all([
-          fetch('/api/testimonials'),
-          fetch('/api/client-photos')
-        ]);
-        
-        const testimonials = await testimonialsRes.json();
-        const clientPhotos = await clientPhotosRes.json();
+        const bootData = window.__bootstrapData || await (window.__bootstrapDataPromise || Promise.resolve(null));
+
+        let testimonials = (bootData && Array.isArray(bootData.testimonials))
+          ? { testimonials: bootData.testimonials }
+          : null;
+
+        let clientPhotos = (bootData && Array.isArray(bootData.clientPhotos))
+          ? { images: bootData.clientPhotos }
+          : null;
+
+        if (!testimonials || !clientPhotos) {
+          const [testimonialsData, clientPhotosData] = await Promise.all([
+            testimonials || (window.__testimonialsPromise || fetch('/api/testimonials').then(response => response.json())),
+            clientPhotos || (window.__clientPhotosPromise || fetch('/api/client-photos').then(response => response.json()))
+          ]);
+          testimonials = testimonials || testimonialsData;
+          clientPhotos = clientPhotos || clientPhotosData;
+        }
         
         if (testimonials.testimonials && testimonials.testimonials.length > 0) {
           const container = document.getElementById('testimonials-container');

@@ -164,6 +164,79 @@ async function startServer() {
     }
   });
 
+  // Bootstrap endpoint to reduce API chaining for critical homepage assets
+  app.get('/api/bootstrap', async (req, res) => {
+    try {
+      const [heroResult, reachResult, statsResult, clientPhotosResult] = await Promise.all([
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/hero',
+          max_results: 10,
+          resource_type: 'image'
+        }),
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/reach-out',
+          max_results: 1,
+          resource_type: 'image'
+        }),
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/Client Estimation',
+          max_results: 1,
+          resource_type: 'image'
+        }),
+        cloudinary.api.resources({
+          type: 'upload',
+          prefix: 'sai-photo/testimonials/clients',
+          max_results: 20,
+          resource_type: 'image'
+        })
+      ]);
+
+      const testimonialsPath = path.join(__dirname, 'testimonials.json');
+      const testimonials = JSON.parse(fs.readFileSync(testimonialsPath, 'utf8'));
+
+      const heroImages = (heroResult.resources || []).map(resource => ({
+        src: resource.secure_url.replace('/upload/', '/upload/f_auto,q_auto/'),
+        public_id: resource.public_id
+      }));
+
+      const reachOutImage = (reachResult.resources && reachResult.resources[0])
+        ? { src: reachResult.resources[0].secure_url.replace('/upload/', '/upload/f_auto,q_auto/') }
+        : null;
+
+      const statsImage = (statsResult.resources && statsResult.resources[0])
+        ? { src: statsResult.resources[0].secure_url.replace('/upload/', '/upload/f_auto,q_auto/') }
+        : null;
+
+      const clientPhotos = (clientPhotosResult.resources || []).map(resource => ({
+        src: resource.secure_url.replace('/upload/', '/upload/f_auto,q_auto/'),
+        public_id: resource.public_id
+      }));
+
+      return res.status(200).json({
+        heroImages,
+        reachOutImage,
+        statsImage,
+        clientPhotos,
+        testimonials,
+        fetchedAt: Date.now()
+      });
+    } catch (error) {
+      console.error('Error fetching bootstrap assets:', error.message);
+      return res.status(200).json({
+        heroImages: [],
+        reachOutImage: null,
+        statsImage: null,
+        clientPhotos: [],
+        testimonials: [],
+        fetchedAt: Date.now(),
+        error: error.message
+      });
+    }
+  });
+
   // Reach out background image endpoint
   app.get('/api/reach-out-bg', async (req, res) => {
     try {
