@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
-    "build": "vite build && cp -r assets dist/ && cp -r public/* dist/",
+    "build": "vite build && cp -r public/* dist/",
     "preview": "vite preview",
     "dev:vite": "vite",
     "pages:build": "npm run build",
