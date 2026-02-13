@@ -1,6 +1,8 @@
 .env
+.dev.vars
 *.json
 *.txt
 rough_note.md
 downloaded_sai_photo
 node_modules
+dist
