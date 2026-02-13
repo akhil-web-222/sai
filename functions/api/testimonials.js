@@ -1,0 +1,82 @@
+export async function onRequest(context) {
+  try {
+    const testimonials = [
+      {
+        "name": "Abinaya Saras M.S",
+        "role": "Apartment Owner",
+        "rating": 5,
+        "review": "Great experience working with them for our apartment interiors. The modular designs are very functional and the wood quality feels much more premium than the usual commercial brands. Every detail was carefully considered and the final result transformed our living space beautifully.",
+        "weeks_ago": 7
+      },
+      {
+        "name": "Monisha .M",
+        "role": "Customer",
+        "rating": 5,
+        "review": "Outstanding furniture craftsmanship! The quality of wood used is exceptional and the designs are both modern and functional. The team was professional throughout the project and delivered exactly what we envisioned. Very impressed with their attention to detail and finishing work.",
+        "weeks_ago": 7
+      },
+      {
+        "name": "Murugan Mukesh",
+        "role": "Client",
+        "rating": 5,
+        "review": "Very good and fast work, good interior designing and quality woods are used. The entire process from consultation to installation was smooth and efficient. They completed our project ahead of schedule without compromising on quality. Highly satisfied with their service.",
+        "weeks_ago": 7
+      },
+      {
+        "name": "Sountharadevi Nadarajamoorthy",
+        "role": "Customer",
+        "rating": 5,
+        "review": "Furniture was good and neat at an affordable price. The craftsmanship is excellent and they offer great value for money. The team understood our budget constraints and delivered beautiful, durable furniture that fits perfectly in our home. Very pleased with the entire experience.",
+        "weeks_ago": 35
+      },
+      {
+        "name": "Estuary Sarovar Premiere",
+        "role": "Poovar Island Resort",
+        "rating": 5,
+        "review": "Sai Wood Treats has been instrumental in creating the luxurious ambiance of our resort. Their custom woodwork, from the elegant reception desk to the intricate ceiling designs, perfectly complements our island paradise setting. The quality and durability of their work withstands our coastal environment beautifully. A truly reliable partner for premium hospitality projects.",
+        "weeks_ago": 15
+      },
+      {
+        "name": "MANSIONS Builders",
+        "role": "Construction Company",
+        "rating": 5,
+        "review": "As a leading construction company, we've collaborated with Sai Wood Treats on multiple high-end residential projects. Their expertise in mansion-scale woodwork is unmatched. From grand staircases to bespoke cabinetry, they deliver excellence consistently. Their treated wood products ensure longevity and maintain their beauty for years. Highly recommended for premium construction projects.",
+        "weeks_ago": 10
+      },
+      {
+        "name": "Rajesh Kumar",
+        "role": "Hotel Manager",
+        "rating": 5,
+        "review": "Sai Wood Treats delivered exceptional woodwork for our hotel renovation. Their attention to detail and quality of materials exceeded our expectations. The team completed the entire project within the agreed timeline and the results speak for themselves. Every guest compliments our new interiors. Highly recommended!",
+        "weeks_ago": 12
+      },
+      {
+        "name": "Priya Sharma",
+        "role": "Interior Designer",
+        "rating": 5,
+        "review": "Working with Sai Wood Treats has been a pleasure. They understand design requirements perfectly and execute with precision. The treated wood they provide is of superior quality and their craftsmanship brings my design visions to life flawlessly. A reliable partner for all my interior projects.",
+        "weeks_ago": 18
+      }
+    ];
+
+    return new Response(JSON.stringify({
+      testimonials: testimonials,
+      total: testimonials.length
+    }), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  } catch (error) {
+    console.error('Error reading testimonials:', error.message);
+    return new Response(JSON.stringify({
+      testimonials: [],
+      total: 0,
+      error: error.message
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+}
