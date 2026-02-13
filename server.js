@@ -4,6 +4,12 @@ import { createServer as createViteServer } from 'vite';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -152,6 +158,99 @@ async function startServer() {
       // Return empty array instead of error to prevent frontend issues
       return res.status(200).json({
         images: [],
+        total: 0,
+        error: error.message
+      });
+    }
+  });
+
+  // Reach out background image endpoint
+  app.get('/api/reach-out-bg', async (req, res) => {
+    try {
+      const reachOutFolder = 'sai-photo/reach-out';
+      const result = await cloudinary.api.resources({
+        type: 'upload',
+        prefix: reachOutFolder,
+        max_results: 1,
+        resource_type: 'image'
+      });
+
+      const image = result.resources.length > 0 ? {
+        src: result.resources[0].secure_url.replace('/upload/', '/upload/f_auto,q_auto/')
+      } : null;
+
+      return res.status(200).json({ image });
+    } catch (error) {
+      console.error('Error fetching reach-out image:', error.message);
+      return res.status(200).json({ image: null, error: error.message });
+    }
+  });
+
+  // Testimonial client photos endpoint
+  app.get('/api/client-photos', async (req, res) => {
+    try {
+      const clientFolder = 'sai-photo/testimonials/clients';
+      const result = await cloudinary.api.resources({
+        type: 'upload',
+        prefix: clientFolder,
+        max_results: 20,
+        resource_type: 'image'
+      });
+
+      const images = result.resources.map(resource => ({
+        src: resource.secure_url.replace('/upload/', '/upload/f_auto,q_auto/'),
+        public_id: resource.public_id
+      }));
+
+      return res.status(200).json({
+        images: images,
+        total: images.length
+      });
+    } catch (error) {
+      console.error('Error fetching client photos:', error.message);
+      return res.status(200).json({
+        images: [],
+        total: 0,
+        error: error.message
+      });
+    }
+  });
+
+  // Stats section client image endpoint
+  app.get('/api/stats-clients', async (req, res) => {
+    try {
+      const statsFolder = 'sai-photo/Client Estimation';
+      const result = await cloudinary.api.resources({
+        type: 'upload',
+        prefix: statsFolder,
+        max_results: 1,
+        resource_type: 'image'
+      });
+
+      const image = result.resources.length > 0 ? {
+        src: result.resources[0].secure_url.replace('/upload/', '/upload/f_auto,q_auto/')
+      } : null;
+
+      return res.status(200).json({ image });
+    } catch (error) {
+      console.error('Error fetching stats client image:', error.message);
+      return res.status(200).json({ image: null, error: error.message });
+    }
+  });
+
+  // Testimonials endpoint
+  app.get('/api/testimonials', (req, res) => {
+    try {
+      const testimonialsPath = path.join(__dirname, 'testimonials.json');
+      const testimonials = JSON.parse(fs.readFileSync(testimonialsPath, 'utf8'));
+      return res.status(200).json({
+        testimonials: testimonials,
+        total: testimonials.length
+      });
+    } catch (error) {
+      console.error('Error reading testimonials:', error.message);
+      return res.status(200).json({
+        testimonials: [],
         total: 0,
         error: error.message
       });

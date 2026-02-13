@@ -428,7 +428,7 @@
 
     <!-- Reach Out to Us Section -->
     <section id="call-to-action" class="call-to-action  my-5 section dark-background">
-      <img src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Reach%20out/b87dpuri2rj41ild9nub" alt="">
+      <img id="reach-out-bg" src="" alt="">
       <div class="container ">
         <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
           <div class="col-xl-10">
@@ -570,7 +570,7 @@
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row gy-4 align-items-center justify-content-between">
           <div class="col-lg-5">
-            <img src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Client%20Estimation/wsk2vwpuzefi4z8o5ebh" alt="" class="img-fluid">
+            <img id="stats-client-img" src="" alt="" class="img-fluid">
           </div>
           <div class="col-lg-6">
             <h3 class="fw-bold fs-2 mb-3">Our Esteemed Clients</h3>
@@ -633,12 +633,14 @@
 
           <script type="application/json" class="swiper-config">
             {
-              "loop": true,
+              "loop": false,
               "speed": 600,
               "autoplay": {
-                "delay": 5000
+                "delay": 5000,
+                "disableOnInteraction": false
               },
-              "slidesPerView": "auto",
+              "slidesPerView": 1,
+              "spaceBetween": 30,
               "pagination": {
                 "el": ".swiper-pagination",
                 "type": "bullets",
@@ -647,101 +649,8 @@
             }
           </script>
 
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Client%20photos/cy9647v51yb4tt2dyr52" class="testimonial-img" alt="">
-                <h3>Greenview Resorts</h3>
-                <h4>Manager</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Sai Wood Treats transformed our interiors with stunning woodwork that perfectly matched our
-                    vision. Truly exceptional craftsmanship! <br>
-                    Their designs have elevated the luxury feel of our resort, leaving our guests impressed.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Client%20photos/qwgb4hkekkepnrxec55e" class="testimonial-img" alt="">
-                <h3>Skyline Apartments</h3>
-                <h4>Project Manager, John Thompson</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>
-                    The team delivered high-quality wood solutions for our apartments, combining elegance with
-                    durability. Highly recommended!
-                    Their timely delivery and customization options were a perfect fit for our modern apartment
-                    needs.
-                  </span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Client%20photos/c80prvpzwxxcwdqyet8p" class="testimonial-img" alt="">
-                <h3>Royal Inn Hotels</h3>
-                <h4>Interior Designer, Emily Clark</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Their attention to detail and commitment to quality made our hotel interiors stand out.
-                    Outstanding service and results!
-                    Every element, from doors to ceilings, reflects their unparalleled expertise.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Client%20photos/adco7e1xovsppqdejmp1" class="testimonial-img" alt="">
-                <h3>Oakwood Builders</h3>
-                <h4>Interior Designer, Emily Clark</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Sai Wood Treats provided customized wood sizes and treated wood that exceeded our expectations.
-                    A reliable partner for all our projects!
-                    Their treated wood has added durability and a refined look to our constructions.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Client%20photos/zm8qqsxe5yqzai1awhad" class="testimonial-img" alt="">
-                <h3>Luxe Villas </h3>
-                <h4>Construction Manager, Olivia Parker</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Sai Wood Treats provided exceptional woodwork that added a sophisticated touch to our luxury
-                    villas. Their attention to detail is unmatched!
-                    The custom wood designs seamlessly blended with our high-end finishes, elevating the overall look of
-                    the villas.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
+          <div class="swiper-wrapper" id="testimonials-container">
+            <!-- Testimonials will be loaded dynamically -->
           </div>
           <div class="swiper-pagination"></div>
         </div>
@@ -862,6 +771,150 @@
 
     // Load hero images when page loads
     document.addEventListener('DOMContentLoaded', loadHeroImages);
+  </script>
+
+  <!-- Load Reach Out Background -->
+  <script>
+    fetch('/api/reach-out-bg')
+      .then(response => response.json())
+      .then(data => {
+        if (data.image) {
+          document.getElementById('reach-out-bg').src = data.image.src;
+        }
+      })
+      .catch(error => console.error('Error loading reach-out background:', error));
+  </script>
+
+  <!-- Load Stats Section Client Image -->
+  <script>
+    fetch('/api/stats-clients')
+      .then(response => response.json())
+      .then(data => {
+        if (data.image) {
+          document.getElementById('stats-client-img').src = data.image.src;
+        }
+      })
+      .catch(error => console.error('Error loading stats client image:', error));
+  </script>
+
+  <!-- Load Testimonials Dynamically -->
+  <script>
+    // Fuzzy match helper function - checks if first word of name matches image filename
+    function fuzzyMatch(testimonialName, imgName) {
+      const cleanTestimonial = testimonialName.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+      const cleanImg = imgName.toLowerCase().replace(/[^a-z0-9]/g, '');
+      
+      // Get first word of testimonial name
+      const firstWord = cleanTestimonial.split(/\s+/)[0];
+      
+      // Check if image name starts with first word or vice versa (handles mansion/mansions)
+      if (cleanImg.startsWith(firstWord) || firstWord.startsWith(cleanImg)) {
+        return true;
+      }
+      
+      // Check if they share a common prefix of at least 5 characters
+      const minLength = Math.min(firstWord.length, cleanImg.length);
+      if (minLength >= 5) {
+        const prefix = Math.min(minLength, 7);
+        if (firstWord.substring(0, prefix) === cleanImg.substring(0, prefix)) {
+          return true;
+        }
+      }
+      
+      // Also check if any word in testimonial matches
+      const words = cleanTestimonial.split(/\s+/);
+      return words.some(word => {
+        if (word.length > 3) {
+          return cleanImg.startsWith(word) || word.startsWith(cleanImg.substring(0, Math.min(6, cleanImg.length)));
+        }
+        return false;
+      });
+    }
+
+    async function loadTestimonials() {
+      try {
+        const [testimonialsRes, clientPhotosRes] = await Promise.all([
+          fetch('/api/testimonials'),
+          fetch('/api/client-photos')
+        ]);
+        
+        const testimonials = await testimonialsRes.json();
+        const clientPhotos = await clientPhotosRes.json();
+        
+        if (testimonials.testimonials && testimonials.testimonials.length > 0) {
+          const container = document.getElementById('testimonials-container');
+          const fallbackPhoto = 'https://res.cloudinary.com/dcuiulfdt/image/upload/v1770960468/sai-photo/testimonials/clients/fallback_cruuly.png';
+          
+          container.innerHTML = testimonials.testimonials.map(testimonial => {
+            // Try fuzzy match with client photos
+            let photoUrl = null;
+            if (clientPhotos.images && clientPhotos.images.length > 0) {
+              const matched = clientPhotos.images.find(img => {
+                const imgName = img.public_id.split('/').pop().toLowerCase();
+                const testimonialName = testimonial.name.toLowerCase();
+                return fuzzyMatch(testimonialName, imgName);
+              });
+              if (matched) photoUrl = matched.src;
+            }
+            
+            // If no match, use UI Avatars API
+            if (!photoUrl) {
+              const initials = testimonial.name
+                .split(' ')
+                .map(word => word[0])
+                .join('')
+                .substring(0, 2)
+                .toUpperCase();
+              photoUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=ffc451&color=fff&size=128&bold=true`;
+            }
+            
+            // Generate star ratings
+            const stars = Array(5).fill(0).map((_, i) => 
+              i < testimonial.rating 
+                ? '<i class="bi bi-star-fill"></i>' 
+                : '<i class="bi bi-star"></i>'
+            ).join('');
+            
+            return `
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <img src="${photoUrl}" 
+                       class="testimonial-img" 
+                       alt="${testimonial.name}"
+                       onerror="this.onerror=null; this.src='${fallbackPhoto}';">
+                  <h3>${testimonial.name}</h3>
+                  <h4>${testimonial.role}</h4>
+                  <div class="stars">
+                    ${stars}
+                  </div>
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    <span>${testimonial.review}</span>
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
+                </div>
+              </div>
+            `;
+          }).join('');
+          
+          // Reinitialize Swiper using main.js initSwiper function
+          setTimeout(() => {
+            const swiperElement = document.querySelector('.testimonials .init-swiper');
+            if (swiperElement && typeof Swiper !== 'undefined') {
+              const config = JSON.parse(
+                swiperElement.querySelector('.swiper-config').innerHTML.trim()
+              );
+              new Swiper(swiperElement, config);
+            }
+          }, 100);
+        }
+      } catch (error) {
+        console.error('Error loading testimonials:', error);
+      }
+    }
+
+    // Load testimonials when page loads
+    document.addEventListener('DOMContentLoaded', loadTestimonials);
   </script>
 
 </body>
