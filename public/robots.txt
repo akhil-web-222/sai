@@ -19,8 +19,8 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# AI Context File
-AI-Context: https://saiwoodtreats.com/ai-context.json
+# AI Context file reference (non-standard directive kept as comment for validator compatibility)
+# https://saiwoodtreats.com/ai-context.json
 
 # Sitemaps
 Sitemap: https://saiwoodtreats.com/sitemap.xml
