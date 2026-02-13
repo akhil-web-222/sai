@@ -16,7 +16,15 @@ async function fetchCloudinaryResources(cloudName, apiKey, apiSecret, prefix, ma
 }
 
 function toOptimizedUrl(url) {
-  return url.replace('/upload/', '/upload/f_auto,q_auto/');
+  return url.replace('/upload/', '/upload/f_auto,q_auto:eco,c_limit,w_800/');
+}
+
+function toSizedUrl(url, width, quality = 'q_auto:eco') {
+  return url.replace('/upload/', `/upload/f_auto,${quality},c_limit,w_${width}/`);
+}
+
+function toSrcSet(url, widths, quality = 'q_auto:eco') {
+  return widths.map((width) => `${toSizedUrl(url, width, quality)} ${width}w`).join(', ');
 }
 
 export async function onRequest(context) {
@@ -40,20 +48,30 @@ export async function onRequest(context) {
       : { testimonials: [] };
 
     const heroImages = (heroResult.resources || []).map((resource) => ({
-      src: toOptimizedUrl(resource.secure_url),
+      src: toSizedUrl(resource.secure_url, 1200, 'q_auto:eco'),
+      srcset: toSrcSet(resource.secure_url, [480, 800, 1200], 'q_auto:eco'),
+      sizes: '100vw',
       public_id: resource.public_id
     }));
 
     const reachOutImage = (reachResult.resources || [])[0]
-      ? { src: toOptimizedUrl(reachResult.resources[0].secure_url) }
+      ? {
+          src: toSizedUrl(reachResult.resources[0].secure_url, 1280, 'q_auto:eco'),
+          srcset: toSrcSet(reachResult.resources[0].secure_url, [640, 1280], 'q_auto:eco'),
+          sizes: '100vw'
+        }
       : null;
 
     const statsImage = (statsResult.resources || [])[0]
-      ? { src: toOptimizedUrl(statsResult.resources[0].secure_url) }
+      ? {
+          src: toSizedUrl(statsResult.resources[0].secure_url, 800, 'q_auto:eco'),
+          srcset: toSrcSet(statsResult.resources[0].secure_url, [480, 800], 'q_auto:eco'),
+          sizes: '(max-width: 992px) 92vw, 40vw'
+        }
       : null;
 
     const clientPhotos = (clientPhotosResult.resources || []).map((resource) => ({
-      src: toOptimizedUrl(resource.secure_url),
+      src: toSizedUrl(resource.secure_url, 160, 'q_auto:eco'),
       public_id: resource.public_id
     }));
 
@@ -72,7 +90,9 @@ export async function onRequest(context) {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=120, s-maxage=300, stale-while-revalidate=86400'
+        'Cache-Control': 'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400',
+        'CDN-Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'Cloudflare-CDN-Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
       }
     });
   } catch (error) {

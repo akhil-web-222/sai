@@ -30,6 +30,14 @@ const FOLDER_CATEGORY_MAP = {
   'sai-photo/album/mansion-builders': 'filter-mansion',
 };
 
+function toSizedUrl(url, width, quality = 'q_auto:eco') {
+  return url.replace('/upload/', `/upload/f_auto,${quality},c_limit,w_${width}/`);
+}
+
+function toSrcSet(url, widths, quality = 'q_auto:eco') {
+  return widths.map((width) => `${toSizedUrl(url, width, quality)} ${width}w`).join(', ');
+}
+
 async function fetchCloudinaryFolder(folder) {
   try {
     console.log(`Fetching folder: ${folder}`);
@@ -198,20 +206,30 @@ async function startServer() {
       const testimonials = JSON.parse(fs.readFileSync(testimonialsPath, 'utf8'));
 
       const heroImages = (heroResult.resources || []).map(resource => ({
-        src: resource.secure_url.replace('/upload/', '/upload/f_auto,q_auto/'),
+        src: toSizedUrl(resource.secure_url, 1200, 'q_auto:eco'),
+        srcset: toSrcSet(resource.secure_url, [480, 800, 1200], 'q_auto:eco'),
+        sizes: '100vw',
         public_id: resource.public_id
       }));
 
       const reachOutImage = (reachResult.resources && reachResult.resources[0])
-        ? { src: reachResult.resources[0].secure_url.replace('/upload/', '/upload/f_auto,q_auto/') }
+        ? {
+            src: toSizedUrl(reachResult.resources[0].secure_url, 1280, 'q_auto:eco'),
+            srcset: toSrcSet(reachResult.resources[0].secure_url, [640, 1280], 'q_auto:eco'),
+            sizes: '100vw'
+          }
         : null;
 
       const statsImage = (statsResult.resources && statsResult.resources[0])
-        ? { src: statsResult.resources[0].secure_url.replace('/upload/', '/upload/f_auto,q_auto/') }
+        ? {
+            src: toSizedUrl(statsResult.resources[0].secure_url, 800, 'q_auto:eco'),
+            srcset: toSrcSet(statsResult.resources[0].secure_url, [480, 800], 'q_auto:eco'),
+            sizes: '(max-width: 992px) 92vw, 40vw'
+          }
         : null;
 
       const clientPhotos = (clientPhotosResult.resources || []).map(resource => ({
-        src: resource.secure_url.replace('/upload/', '/upload/f_auto,q_auto/'),
+        src: toSizedUrl(resource.secure_url, 160, 'q_auto:eco'),
         public_id: resource.public_id
       }));
 

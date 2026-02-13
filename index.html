@@ -69,14 +69,8 @@
       })
       .catch(() => null);
 
-    // Warm fallback API requests early as well (used only if bootstrap lacks data)
-    window.__testimonialsPromise = fetch('/api/testimonials')
-      .then((response) => response.ok ? response.json() : { testimonials: [] })
-      .catch(() => ({ testimonials: [] }));
-
-    window.__clientPhotosPromise = fetch('/api/client-photos')
-      .then((response) => response.ok ? response.json() : { images: [] })
-      .catch(() => ({ images: [] }));
+    // Fallback API requests are intentionally lazy and only triggered
+    // if bootstrap payload does not include the required data.
   </script>
   
   <script type="application/ld+json">
