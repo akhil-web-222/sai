@@ -179,8 +179,11 @@
     let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
 
     let initIsotope;
-    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
-      initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
+    const isotopeContainer = isotopeItem.querySelector('.isotope-container');
+    if (!isotopeContainer) return; // Skip if no container found
+    
+    imagesLoaded(isotopeContainer, function() {
+      initIsotope = new Isotope(isotopeContainer, {
         itemSelector: '.isotope-item',
         layoutMode: layout,
         filter: filter,
