@@ -21,7 +21,7 @@ export async function onRequest(context) {
     const apiKey = context.env.CLOUDINARY_API_KEY;
     const apiSecret = context.env.CLOUDINARY_API_SECRET;
 
-    const statsFolder = 'sai-photo/Client Estimation';
+    const statsFolder = 'sai-photo/clients';
     const result = await fetchCloudinaryResources(cloudName, apiKey, apiSecret, statsFolder, 1);
 
     const image = result.resources.length > 0 ? {

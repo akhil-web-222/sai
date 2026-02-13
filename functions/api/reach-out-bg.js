@@ -21,7 +21,7 @@ export async function onRequest(context) {
     const apiKey = context.env.CLOUDINARY_API_KEY;
     const apiSecret = context.env.CLOUDINARY_API_SECRET;
 
-    const reachOutFolder = 'sai-photo/reach-out';
+    const reachOutFolder = 'sai-photo/contact';
     const result = await fetchCloudinaryResources(cloudName, apiKey, apiSecret, reachOutFolder, 1);
 
     const image = result.resources.length > 0 ? {
