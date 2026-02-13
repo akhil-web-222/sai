@@ -4,6 +4,7 @@
 *.txt
 *.log
 rough_note.md
+HANDOFF_TO_NEXT_AGENT.md
 downloaded_sai_photo
 node_modules
 dist
