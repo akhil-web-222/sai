@@ -102,13 +102,21 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'">
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+  <link rel="preload" href="assets/vendor/bootstrap/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="assets/vendor/bootstrap-icons/bootstrap-icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="assets/vendor/aos/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="assets/vendor/swiper/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="assets/vendor/glightbox/css/glightbox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  </noscript>
+  <!-- Main CSS File (non-blocking, critical CSS is already inlined above) -->
+  <link rel="preload" href="assets/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="assets/css/main.css" rel="stylesheet"></noscript>
   <style>
     .hero-slideshow {
       position: absolute;
@@ -138,7 +146,6 @@
     }
   </style>
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="assets/css/main.css" as="style">
   <link rel="preload" href="assets/js/main.js" as="script">
   
   <!-- Sitemap -->
@@ -210,7 +217,7 @@
               src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_800/v1770862347/sai-photo/album/house-work/image-02.jpg"
               srcset="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_400/v1770862347/sai-photo/album/house-work/image-02.jpg 400w,
                 https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_800/v1770862347/sai-photo/album/house-work/image-02.jpg 800w,
-                https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:best/w_1200/v1770862347/sai-photo/album/house-work/image-02.jpg 1200w"
+                https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_1200/v1770862347/sai-photo/album/house-work/image-02.jpg 1200w"
               sizes="(max-width: 600px) 90vw, (max-width: 1200px) 50vw, 600px"
               alt="Premium wood treatment house work"
               loading="lazy"
@@ -530,7 +537,7 @@
                 src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862331/sai-photo/album/hotel-apartments/image-06.jpg"
                 srcset="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_320/v1770862331/sai-photo/album/hotel-apartments/image-06.jpg 320w,
                   https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862331/sai-photo/album/hotel-apartments/image-06.jpg 600w,
-                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:best/w_900/v1770862331/sai-photo/album/hotel-apartments/image-06.jpg 900w"
+                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_900/v1770862331/sai-photo/album/hotel-apartments/image-06.jpg 900w"
                 sizes="(max-width: 768px) 92vw, (max-width: 1200px) 45vw, 280px"
                 alt="Apartment works"
                 loading="lazy"
@@ -539,7 +546,7 @@
                 width="600"
                 height="400">
               <div class="card-body">
-                <h5 class="card-title">Apartment Works</h5>
+                <h3 class="card-title h5">Apartment Works</h3>
                 <p class="card-text text-justify">
                   We create stunning interiors for apartments, blending functionality and elegance with custom cabinetry
                   and exquisite flooring.
@@ -553,7 +560,7 @@
                 src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862353/sai-photo/album/house-work/image-05.jpg"
                 srcset="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_320/v1770862353/sai-photo/album/house-work/image-05.jpg 320w,
                   https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862353/sai-photo/album/house-work/image-05.jpg 600w,
-                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:best/w_900/v1770862353/sai-photo/album/house-work/image-05.jpg 900w"
+                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_900/v1770862353/sai-photo/album/house-work/image-05.jpg 900w"
                 sizes="(max-width: 768px) 92vw, (max-width: 1200px) 45vw, 280px"
                 alt="Hotel works"
                 loading="lazy"
@@ -562,7 +569,7 @@
                 width="600"
                 height="400">
               <div class="card-body">
-                <h5 class="card-title">Hotel Works</h5>
+                <h3 class="card-title h5">Hotel Works</h3>
                 <p class="card-text text-justify">
                   Our hotel works transform ordinary spaces into luxurious retreats, focusing on bespoke designs that
                   enhance guest experiences.
@@ -576,7 +583,7 @@
                 src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862302/sai-photo/album/customized-work/image-03.jpg"
                 srcset="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_320/v1770862302/sai-photo/album/customized-work/image-03.jpg 320w,
                   https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862302/sai-photo/album/customized-work/image-03.jpg 600w,
-                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:best/w_900/v1770862302/sai-photo/album/customized-work/image-03.jpg 900w"
+                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_900/v1770862302/sai-photo/album/customized-work/image-03.jpg 900w"
                 sizes="(max-width: 768px) 92vw, (max-width: 1200px) 45vw, 280px"
                 alt="Customizable works"
                 loading="lazy"
@@ -585,7 +592,7 @@
                 width="600"
                 height="400">
               <div class="card-body">
-                <h5 class="card-title">Customizable Works</h5>
+                <h3 class="card-title h5">Customizable Works</h3>
                 <p class="card-text text-justify">
                   Our customizable solutions allow you to choose materials and designs, ensuring every piece perfectly
                   fits your unique space.
@@ -599,7 +606,7 @@
                 src="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862367/sai-photo/album/house-work/image-09.jpg"
                 srcset="https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_320/v1770862367/sai-photo/album/house-work/image-09.jpg 320w,
                   https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_600/v1770862367/sai-photo/album/house-work/image-09.jpg 600w,
-                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:best/w_900/v1770862367/sai-photo/album/house-work/image-09.jpg 900w"
+                  https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto/q_auto:eco/w_900/v1770862367/sai-photo/album/house-work/image-09.jpg 900w"
                 sizes="(max-width: 768px) 92vw, (max-width: 1200px) 45vw, 280px"
                 alt="House works"
                 loading="lazy"
@@ -608,7 +615,7 @@
                 width="600"
                 height="400">
               <div class="card-body">
-                <h5 class="card-title">House Works</h5>
+                <h3 class="card-title h5">House Works</h3>
                 <p class="card-text text-justify">
                   We specialize in custom cabinetry and renovations, creating beautiful and functional living spaces
                   tailored to your style.
@@ -740,7 +747,7 @@
                   src="/founder-image.webp" data-hires-src="/founder-image.jpg" class="img-fluid" alt="Founder image" loading="lazy" decoding="async" fetchpriority="low" width="640" height="640">
               </div>
               <div class="member-info">
-                <h4>Arul P </h4>
+                <h3 class="h4">Arul P </h3>
                 <span>Proprietor | SAI WOOD TREATS</span>
               </div>
             </div>
@@ -818,11 +825,12 @@
       slideshow.innerHTML = heroImages.map((img, index) => {
         const src400 = optimizeCloudinaryUrl(img.src, 400);
         const src800 = optimizeCloudinaryUrl(img.src, 800);
-        const src1200 = optimizeCloudinaryUrl(img.src, 1200, 'q_auto:best');
+        const srcset = img.srcset || `${src400} 400w, ${src800} 800w, ${optimizeCloudinaryUrl(img.src, 1200)} 1200w`;
+        const sizes = img.sizes || '100vw';
         const priority = index === 0 ? 'high' : 'low';
         const loading = index === 0 ? 'eager' : 'lazy';
 
-        return `<img src="${src800}" srcset="${src400} 400w, ${src800} 800w, ${src1200} 1200w" sizes="100vw" alt="Sai Wood Treats" class="${index === 0 ? 'active' : ''}" loading="${loading}" fetchpriority="${priority}" decoding="async">`;
+        return `<img src="${src800}" srcset="${srcset}" sizes="${sizes}" alt="Sai Wood Treats hero slide ${index + 1}" class="${index === 0 ? 'active' : ''}" loading="${loading}" fetchpriority="${priority}" decoding="async" width="1200" height="800">`;
       }
       ).join('');
 
@@ -993,6 +1001,8 @@
                        loading="lazy"
                        decoding="async"
                        fetchpriority="low"
+                       width="128"
+                       height="128"
                        onerror="this.onerror=null; this.src='${fallbackPhoto}';">
                   <h3>${testimonial.name}</h3>
                   <h4>${testimonial.role}</h4>
@@ -1082,36 +1092,6 @@
       });
 
       observer.observe(document.body, { childList: true, subtree: true });
-    });
-  </script>
-
-  <script>
-    // Remove alt text after image has successfully loaded
-    document.addEventListener('DOMContentLoaded', () => {
-      const removeAltAfterLoad = (img) => {
-        if (!img) return;
-
-        // Remove immediately to avoid showing fallback alt text when image is slow/broken
-        img.removeAttribute('alt');
-
-        if (img.complete && img.naturalWidth > 0) {
-          return;
-        }
-
-        img.addEventListener('load', () => {
-          img.removeAttribute('alt');
-        }, { once: true });
-      };
-
-      document.querySelectorAll('img[alt]').forEach(removeAltAfterLoad);
-
-      // Handle images injected later (hero/testimonials/API content)
-      document.body.addEventListener('load', (event) => {
-        const target = event.target;
-        if (target && target.tagName === 'IMG') {
-          target.removeAttribute('alt');
-        }
-      }, true);
     });
   </script>
 
