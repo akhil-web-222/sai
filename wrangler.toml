@@ -1,0 +1,9 @@
+name = "sai-wood-treats"
+compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2024-01-01"
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "service-worker"
