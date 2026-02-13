@@ -1,0 +1,11 @@
+name = "sai-wood-treats"
+compatibility_date = "2026-02-13"
+
+[env.production]
+compatibility_date = "2026-02-13"
+
+# Local dev configuration
+[dev]
+ip = "127.0.0.1"
+port = 8788
+local_protocol = "http"

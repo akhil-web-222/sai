@@ -22,6 +22,32 @@
   <meta property="og:url" content="https://saiwoodtreats.com">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://saiwoodtreats.com">
+  
+  <!-- Critical CSS for LCP Optimization -->
+  <style>
+    /* Critical above-the-fold styles to reduce LCP from 41.7s */
+    body { margin: 0; font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+    .hero { position: relative; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero.dark-background { background-color: #1a1a1a; }
+    .hero .container { position: relative; z-index: 3; max-width: 1320px; margin: 0 auto; padding: 0 15px; }
+    .hero h2 { font-size: clamp(2rem, 5vw, 3rem); color: #fff; margin-bottom: 1rem; font-weight: 700; line-height: 1.2; }
+    .hero p { font-size: clamp(1rem, 2vw, 1.25rem); color: rgba(255,255,255,0.9); line-height: 1.6; margin: 0; }
+    .hero-slideshow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+    .hero-slideshow::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 2; }
+    .header { position: fixed; top: 0; left: 0; right: 0; z-index: 997; background: rgba(255,255,255,0.95); transition: all 0.3s; }
+  </style>
+  
+  <!-- Preconnect to critical origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+  
+  <!-- Preload critical hero font -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecg.woff2" as="font" type="font/woff2" crossorigin>
+  
+  <!-- DNS Prefetch for additional resources -->
+  <link rel="dns-prefetch" href="//res.cloudinary.com">
+  
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -46,12 +72,10 @@
     </script>
       
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <!-- Fonts - Load with display=swap to prevent render blocking -->
   <link
     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+    rel="stylesheet" media="print" onload="this.media='all'">
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -91,10 +115,6 @@
   <!-- Preload Critical Resources -->
   <link rel="preload" href="assets/css/main.css" as="style">
   <link rel="preload" href="assets/js/main.js" as="script">
-  
-  <!-- DNS Prefetch -->
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
-  <link rel="dns-prefetch" href="//res.cloudinary.com">
   
   <!-- Sitemap -->
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -702,18 +722,18 @@
       });
   </script>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <!-- Vendor JS Files - Deferred for performance -->
+  <script defer src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script defer src="assets/vendor/php-email-form/validate.js"></script>
+  <script defer src="assets/vendor/aos/aos.js"></script>
+  <script defer src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script defer src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script defer src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script defer src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script defer src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
 
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <!-- Main JS File - Deferred -->
+  <script defer src="assets/js/main.js"></script>
 
   <!-- Hero Slideshow Script -->
   <script>

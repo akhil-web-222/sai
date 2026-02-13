@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage - High Priority -->
+  <url>
+    <loc>https://saiwoodtreats.com/</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Service Details - CRITICAL for AI Citations -->
+  <url>
+    <loc>https://saiwoodtreats.com/service-details.html</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <!-- Wood Supply - High Value Citation Page -->
+  <url>
+    <loc>https://saiwoodtreats.com/wood-supply.html</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://saiwoodtreats.com/contact.html</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  
+  <!-- Portfolio Details -->
+  <url>
+    <loc>https://saiwoodtreats.com/portfolio-details.html</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  
+  <!-- AI Context Files for Discovery -->
+  <url>
+    <loc>https://saiwoodtreats.com/llms.txt</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+  
+  <url>
+    <loc>https://saiwoodtreats.com/ai-context.json</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+  
+</urlset>

@@ -1,7 +1,5 @@
 .env
 .dev.vars
-*.json
-*.txt
 *.log
 rough_note.md
 HANDOFF_TO_NEXT_AGENT.md
@@ -10,3 +8,13 @@ node_modules
 dist
 .DS_Store
 .wrangler
+
+# Allow specific JSON/TXT files for SEO/GEO
+!public/llms.txt
+!public/ai-context.json
+!public/sitemap.xml
+!public/robots.txt
+!package.json
+!package-lock.json
+!vite.config.js
+!testimonials.json

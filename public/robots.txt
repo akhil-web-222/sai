@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# AI Bot Specific Directives
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# AI Context File
+AI-Context: https://saiwoodtreats.com/ai-context.json
+
+# Sitemaps
+Sitemap: https://saiwoodtreats.com/sitemap.xml
