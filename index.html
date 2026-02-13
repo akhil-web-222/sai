@@ -1013,6 +1013,34 @@
     document.addEventListener('DOMContentLoaded', loadTestimonials);
   </script>
 
+  <script>
+    // Remove alt text after image has successfully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const removeAltAfterLoad = (img) => {
+        if (!img) return;
+
+        if (img.complete && img.naturalWidth > 0) {
+          img.removeAttribute('alt');
+          return;
+        }
+
+        img.addEventListener('load', () => {
+          img.removeAttribute('alt');
+        }, { once: true });
+      };
+
+      document.querySelectorAll('img[alt]').forEach(removeAltAfterLoad);
+
+      // Handle images injected later (hero/testimonials/API content)
+      document.body.addEventListener('load', (event) => {
+        const target = event.target;
+        if (target && target.tagName === 'IMG') {
+          target.removeAttribute('alt');
+        }
+      }, true);
+    });
+  </script>
+
 </body>
 
 </html>
