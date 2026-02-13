@@ -1,5 +1,3 @@
-import { v2 as cloudinary } from 'cloudinary';
-
 const FOLDER_CATEGORY_MAP = {
   'sai-photo/album/house-work': 'filter-app',
   'sai-photo/album/customized-work': 'filter-product',
@@ -8,6 +6,23 @@ const FOLDER_CATEGORY_MAP = {
   'sai-photo/album/mansion-builders': 'filter-mansion'
 };
 
+async function fetchCloudinaryResources(cloudName, apiKey, apiSecret, prefix) {
+  const url = `https://api.cloudinary.com/v1_1/${cloudName}/resources/image?prefix=${encodeURIComponent(prefix)}&max_results=500&type=upload`;
+  
+  const auth = btoa(`${apiKey}:${apiSecret}`);
+  const response = await fetch(url, {
+    headers: {
+      'Authorization': `Basic ${auth}`
+    }
+  });
+  
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  
+  return await response.json();
+}
+
 export async function onRequest(context) {
   try {
     const { searchParams } = new URL(context.request.url);
@@ -15,11 +30,9 @@ export async function onRequest(context) {
     const offset = parseInt(searchParams.get('offset')) || 0;
     const categoryFilter = searchParams.get('category');
 
-    cloudinary.config({
-      cloud_name: context.env.CLOUDINARY_CLOUD_NAME,
-      api_key: context.env.CLOUDINARY_API_KEY,
-      api_secret: context.env.CLOUDINARY_API_SECRET
-    });
+    const cloudName = context.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = context.env.CLOUDINARY_API_KEY;
+    const apiSecret = context.env.CLOUDINARY_API_SECRET;
 
     const folders = Object.keys(FOLDER_CATEGORY_MAP);
     let allImages = [];
@@ -27,12 +40,7 @@ export async function onRequest(context) {
 
     const folderPromises = folders.map(async (folder) => {
       try {
-        const result = await cloudinary.api.resources({
-          type: 'upload',
-          prefix: folder,
-          max_results: 500,
-          resource_type: 'image'
-        });
+        const result = await fetchCloudinaryResources(cloudName, apiKey, apiSecret, folder);
         return { folder, resources: result.resources };
       } catch (error) {
         console.error(`Error fetching folder ${folder}:`, error.message);
