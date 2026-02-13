@@ -70,13 +70,16 @@
     }
   }
 
-  // Remove preloader on window load
-  window.addEventListener('load', removePreloader);
+  // Remove preloader as early as possible (don't wait for all images)
+  document.addEventListener('DOMContentLoaded', removePreloader);
   
   // Also remove preloader when footer is loaded (since preloader is in footer)
   window.addEventListener('footerLoaded', () => {
     setTimeout(removePreloader, 100); // Small delay to ensure preloader is in DOM
   });
+
+  // Hard fallback in case any footer/load event is delayed
+  setTimeout(removePreloader, 2500);
 
   /**
    * Scroll top button
@@ -142,7 +145,23 @@
       mirror: false
     });
   }
-  window.addEventListener('load', aosInit);
+
+  function runNonCriticalInit() {
+    if (typeof requestIdleCallback === 'function') {
+      requestIdleCallback(() => {
+        if (typeof AOS !== 'undefined') aosInit();
+        initSwiper();
+      }, { timeout: 1500 });
+      return;
+    }
+
+    setTimeout(() => {
+      if (typeof AOS !== 'undefined') aosInit();
+      initSwiper();
+    }, 300);
+  }
+
+  document.addEventListener('DOMContentLoaded', runNonCriticalInit);
 
   /**
    * Init swiper sliders
@@ -161,13 +180,15 @@
     });
   }
 
-  window.addEventListener("load", initSwiper);
-
   /**
    * Initiate glightbox
    */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof GLightbox !== 'undefined') {
+      GLightbox({
+        selector: '.glightbox'
+      });
+    }
   });
 
   /**
@@ -209,7 +230,11 @@
   /**
    * Initiate Pure Counter
    */
-  new PureCounter();
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof PureCounter !== 'undefined') {
+      new PureCounter();
+    }
+  });
 
   /**
    * Correct scrolling position upon page load for URLs containing hash links.
