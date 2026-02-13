@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
-    "build": "vite build && cp -r public/* dist/",
+    "build": "vite build && mkdir -p dist/assets && cp -r assets/vendor dist/assets/ && mkdir -p dist/assets/js && cp assets/js/main.js dist/assets/js/main.js && cp -r public/* dist/",
     "preview": "vite preview",
     "dev:vite": "vite",
     "pages:build": "npm run build",
