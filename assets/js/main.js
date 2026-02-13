@@ -63,43 +63,73 @@
   /**
    * Preloader
    */
-  const preloader = document.querySelector('#preloader');
-  if (preloader) {
-    window.addEventListener('load', () => {
+  function removePreloader() {
+    const preloader = document.querySelector('#preloader');
+    if (preloader) {
       preloader.remove();
-    });
+    }
   }
+
+  // Remove preloader on window load
+  window.addEventListener('load', removePreloader);
+  
+  // Also remove preloader when footer is loaded (since preloader is in footer)
+  window.addEventListener('footerLoaded', () => {
+    setTimeout(removePreloader, 100); // Small delay to ensure preloader is in DOM
+  });
 
   /**
    * Scroll top button
    */
-  let scrollTop = document.querySelector('.scroll-top');
+  function initScrollTop() {
+    let scrollTop = document.querySelector('.scroll-top');
 
-  function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+    function toggleScrollTop() {
+      if (scrollTop) {
+        window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+      }
     }
+    
+    if (scrollTop) {
+      scrollTop.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    window.addEventListener('load', toggleScrollTop);
+    document.addEventListener('scroll', toggleScrollTop);
   }
-  scrollTop.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+
+  function initWhatsAppBtn() {
+    let whatsappBtn = document.querySelector('.whatsapp-btn');
+
+    function toggleWhatsAppBtn() {
+      if (whatsappBtn) {
+        window.scrollY > 100 ? whatsappBtn.classList.add('active') : whatsappBtn.classList.remove('active');
+      }
+    }
+
+    window.addEventListener('load', toggleWhatsAppBtn);
+    document.addEventListener('scroll', toggleWhatsAppBtn);
+  }
+
+  // Initialize scroll-top and whatsapp button when footer is loaded
+  window.addEventListener('footerLoaded', () => {
+    initScrollTop();
+    initWhatsAppBtn();
   });
 
-  window.addEventListener('load', toggleScrollTop);
-  document.addEventListener('scroll', toggleScrollTop);
-let whatsappBtn = document.querySelector('.whatsapp-btn');
-
-function toggleWhatsAppBtn() {
-  if (whatsappBtn) {
-    window.scrollY > 100 ? whatsappBtn.classList.add('active') : whatsappBtn.classList.remove('active');
-  }
-}
-
-window.addEventListener('load', toggleWhatsAppBtn);
-document.addEventListener('scroll', toggleWhatsAppBtn);
+  // Also initialize on DOMContentLoaded in case footer is already loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('.scroll-top')) {
+      initScrollTop();
+      initWhatsAppBtn();
+    }
+  });
 
   /**
    * Animation on scroll function and init
@@ -149,8 +179,11 @@ document.addEventListener('scroll', toggleWhatsAppBtn);
     let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
 
     let initIsotope;
-    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
-      initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
+    const isotopeContainer = isotopeItem.querySelector('.isotope-container');
+    if (!isotopeContainer) return; // Skip if no container found
+    
+    imagesLoaded(isotopeContainer, function() {
+      initIsotope = new Isotope(isotopeContainer, {
         itemSelector: '.isotope-item',
         layoutMode: layout,
         filter: filter,

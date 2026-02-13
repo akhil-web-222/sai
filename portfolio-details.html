@@ -35,6 +35,36 @@
       cursor: pointer;
       color: coral;
     }
+    #loadMoreBtn {
+      background-color: #ffc451;
+      color: #151515;
+      border: none;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px 0 rgba(255, 196, 81, 0.3);
+      display: none;
+      margin: 0 auto;
+    }
+    #loadMoreBtn:hover {
+      background-color: #ffb520;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px 0 rgba(255, 196, 81, 0.5);
+    }
+    #loadMoreBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    #loadMoreContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
   </style>
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -127,87 +157,39 @@
           <ul id="portfolio-filters" class="portfolio-filters isotope-filters responsive-filters" data-aos="fade-up"
             data-aos-delay="100">
             <li class="filter-active" data-filter="*">All Images</li>
-            <li data-filter=".filter-app">House Works</li>
-            <li data-filter=".filter-product">Customized Works</li>
-            <li data-filter=".filter-branding">Construction</li>
-            <li data-filter=".filter-books">Hotel and Apartments</li>
+            <!-- Dynamic filters will be generated from API categoryFolderMap -->
           </ul>
           <div class="portfolio-grid  row min-h-100" data-aos="fade-up" data-aos-delay="200" id="portfolio-grid">
+          </div>
+          
+          <!-- Load More Button -->
+          <div id="loadMoreContainer" class="mt-5 mb-4">
+            <button id="loadMoreBtn">
+              <i class="bi bi-arrow-down-circle"></i> Load More Images
+            </button>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer id="footer" class="footer dark-background">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row  justify-content-md-center  gy-4">
-          <div class="col-lg-6 col-md-6 footer-about">
-            <a href="index.html" class="logo d-flex align-items-center">
-              <span class="sitename">Sai Wood Treats </span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>21/75-9,Sastha Nagar</p>
-              <p>Kollamcode , Tamil Nadu</p>
-              <p>Pincode :629160</p>
-              <p>GSTIN Number: 33AIIPA6764B1ZO </p>
-              <p class="mt-3"> <a href="https://wa.me/+919447005258"><strong>Phone:</strong><span>+91
-                    9447005258</span></a></p>
-              <p><a href="mailto:saiwoodtreats@gmail.com"> <strong>Email:</strong> <span>saiwoodtreats@gmail.com
-                  </span></a></p>
-            </div>
-            <div class="social-links d-flex mt-4">
-              <a
-                href="https://www.instagram.com/saiwoodtreats?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i
-                  class="bi bi-instagram "></i></a>
-            </div>
-          </div>
-          <div class="d-flex  col-lg-6  justify-content-md-center my-sm-5 justify-content-lg-end footer-about">
-            <div class="col-md-3  mx-lg-5  footer-links">
-              <h4>Our Services</h4>
-              <ul>
-                <li><i class="bi bi-chevron-right"></i> <a href="service-details.html">Wood Furnitures</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="service-details.html">Resistance</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="service-details.html"> House wood furnitures</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="service-details.html"> Hotels</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="service-details.html">Customized Woods</a></li>
-              </ul>
-            </div>
-            <div class=" col-md-3 footer-links">
-              <h4>Useful Links</h4>
-              <ul>
-                <li><i class="bi bi-chevron-right"></i> <a href="index.html"> Home</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="index.html#about"> About us</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="service-details.html"> Services</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="portfolio-details.html"> Gallery</a></li>
-                <li><i class="bi bi-chevron-right"></i> <a href="wood-supply.html"> Wood Supply</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="copyright">
-      <div class="container text-center">
-        <p> <span>Copyright</span> <strong class="px-1 sitename">Sai Wood Treats </strong> <span>All Rights
-            Reserved</span></p>
-        <div class="credits">
-          Designed by <a href="https://innotechtitans.in/">Innotech Titans</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Whatsapp button -->
-  <a href="https://wa.me/+919447005258" id="whatsapp-btn"
-    class="whatsapp-btn d-flex align-items-center justify-content-center" target="_blank">
-    <i class="bi bi-whatsapp"></i>
-  </a>
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+  <div id="footer-placeholder"></div>
+  <script>
+    // Load footer before initializing other scripts
+    fetch('/footer.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Footer not found');
+        return response.text();
+      })
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+        // Dispatch event to notify footer is loaded
+        window.dispatchEvent(new Event('footerLoaded'));
+      })
+      .catch(error => {
+        console.error('Error loading footer:', error);
+      });
+  </script>
   <!-- Preloader -->
   <div id="preloader"></div>
 
@@ -228,162 +210,126 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script> -->
   <script>
-    const images = [
-      // Existing Estuary Sarovar House Work Images
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/hongmx4gpqkwlfxbyqsl", category: "filter-app", title: "Estuary Sarovar House Work" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/l55libxhzcjhedqocegn", category: "filter-app", title: "Estuary Sarovar House Work 2" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/g3b8gtkcwiq0ggaksthf", category: "filter-app", title: "Estuary Sarovar House Work 3" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/g8inomrpqqopvdh3wnhv", category: "filter-app", title: "Estuary Sarovar House Work 4" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/cnekfgkxl5ixguulau4j", category: "filter-app", title: "Estuary Sarovar House Work 5" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/wz918vfvhh7ubtfgy1ur", category: "filter-app", title: "Estuary Sarovar House Work 6" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/n16ecnbkttattedrmmzb", category: "filter-app", title: "Estuary Sarovar House Work 7" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/ummrydk9i2945rxgefak", category: "filter-app", title: "Estuary Sarovar House Work 8" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/xtxduvvfb7qhcc3eam8y", category: "filter-app", title: "Estuary Sarovar House Work 9" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/wceccqn54xb9j9bifyff", category: "filter-app", title: "Estuary Sarovar House Work 10" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/v1749572465/WhatsApp_Image_2025-06-07_at_10.00.52_PM_qshx3r.jpg", category: "filter-app", title: "Estuary Sarovar House Work 11" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/a1j6d9udx35bki7cynpa", category: "filter-app", title: "Estuary Sarovar House Work 12" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/House%20work/ugnqcm0nnwv2v77xjzfi", category: "filter-app", title: "Estuary Sarovar House Work 13" },
+    // Fetch images dynamically from API with pagination
+    let images = [];
+    let currentOffset = 0;
+    const IMAGES_PER_PAGE = 20;
+    let hasMoreImages = true;
+    let isLoading = false;
+    let currentFilter = "*";
+    let categoryFolderMap = {}; // Store category to folder name mapping
 
-      // Existing Customized Work Images
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Customized%20work/kte0ry9xnkeyz8c327nl", category: "filter-product", title: "Estuary Sarovar Customized Work 1" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Customized%20work/opec4ge9ip2bqwvxlhak", category: "filter-product", title: "Estuary Sarovar Customized Work 2" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Customized%20work/xlur24yn6ufazrtyrhpg", category: "filter-product", title: "Estuary Sarovar Customized Work 3" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Customized%20work/epz8qlc4oi17u9wsgevb", category: "filter-product", title: "Estuary Sarovar Customized Work 4" },
+    // Fetch images from the API
+    async function loadGalleryImages(append = false) {
+      if (isLoading || (!hasMoreImages && append)) return;
+      
+      isLoading = true;
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn) {
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Loading...';
+      }
 
-      // Existing Construction Images
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/n20par288bmcigjhltuq", category: "filter-branding", title: "Construction 1" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/npkogljfnfm1qtxs2w6z", category: "filter-branding", title: "Construction 2" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/kcyjtjm4fnkeio5hcxbo", category: "filter-branding", title: "Construction 3" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/amytdnxszssfjux2y7om", category: "filter-branding", title: "Construction 4" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/zx0bfrxo37lgfxdoclco", category: "filter-branding", title: "Construction 5" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/xhvubrqxumqvgnyaq6cc", category: "filter-branding", title: "Construction 6" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/uop70po74czmj1rx8v9j", category: "filter-branding", title: "Construction 7" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/wcnyhyp4gckr5zcbsxod", category: "filter-branding", title: "Construction 8" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Construction%20work/trmktxjduut27htssloo", category: "filter-branding", title: "Construction 9" },
-
-      // Existing Hotel and Apartments Images
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/g1wxoysqrrfkzcswqagi", category: "filter-books", title: "Hotel and Apartments 1" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/cjfrqafkttjokakprn3o", category: "filter-books", title: "Hotel and Apartments 2" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/zwyasldu3sbfezbejrma", category: "filter-books", title: "Hotel and Apartments 3" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/arm6yfumjo6jm6qmef5a", category: "filter-books", title: "Hotel and Apartments 4" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/wfd1ys7tv6o6ven3nnws", category: "filter-books", title: "Hotel and Apartments 5" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/jhorqa3d95lsxwsxcnav", category: "filter-books", title: "Hotel and Apartments 6" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/gp0mtqn8bajbqyxzprb9", category: "filter-books", title: "Hotel and Apartments 7" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/Resort-Hotel/kolw2tkfcbndm9nqqgpj", category: "filter-books", title: "Hotel and Apartments 8" },
-
-      // NEW MANSION BUILDERS IMAGES (All 87 images)
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.10_PM_hfteth", category: "filter-mansion", title: "Mansion Builders 1" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.11_PM_tfpqui", category: "filter-mansion", title: "Mansion Builders 2" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.12_PM_ezwoks", category: "filter-mansion", title: "Mansion Builders 3" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.11_PM_1_wu3zty", category: "filter-mansion", title: "Mansion Builders 4" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.12_PM_1_teiynl", category: "filter-mansion", title: "Mansion Builders 5" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.13_PM_1_khmzyk", category: "filter-mansion", title: "Mansion Builders 6" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.13_PM_fecqzf", category: "filter-mansion", title: "Mansion Builders 7" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.14_PM_vg2gro", category: "filter-mansion", title: "Mansion Builders 8" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.16_PM_smoixf", category: "filter-mansion", title: "Mansion Builders 9" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.18_PM_heg1nk", category: "filter-mansion", title: "Mansion Builders 10" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.19_PM_qktahr", category: "filter-mansion", title: "Mansion Builders 11" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.23_PM_srunjp", category: "filter-mansion", title: "Mansion Builders 12" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.24_PM_tgfohh", category: "filter-mansion", title: "Mansion Builders 13" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.24_PM_1_m8ic4k", category: "filter-mansion", title: "Mansion Builders 14" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.25_PM_1_fawj3h", category: "filter-mansion", title: "Mansion Builders 15" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.25_PM_ksge50", category: "filter-mansion", title: "Mansion Builders 16" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.26_PM_xkshje", category: "filter-mansion", title: "Mansion Builders 17" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.26_PM_1_gmj4j3", category: "filter-mansion", title: "Mansion Builders 18" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.26_PM_2_j76bij", category: "filter-mansion", title: "Mansion Builders 19" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.35_PM_xncucm", category: "filter-mansion", title: "Mansion Builders 20" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.36_PM_p1is3d", category: "filter-mansion", title: "Mansion Builders 21" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.36_PM_1_ziw6im", category: "filter-mansion", title: "Mansion Builders 22" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.37_PM_hyov1m", category: "filter-mansion", title: "Mansion Builders 23" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.37_PM_1_fexhnh", category: "filter-mansion", title: "Mansion Builders 24" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.37_PM_2_qvu8qh", category: "filter-mansion", title: "Mansion Builders 25" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.38_PM_a6n7jg", category: "filter-mansion", title: "Mansion Builders 26" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.39_PM_zqclbo", category: "filter-mansion", title: "Mansion Builders 27" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.38_PM_1_sfbi72", category: "filter-mansion", title: "Mansion Builders 28" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.39_PM_1_xpjjum", category: "filter-mansion", title: "Mansion Builders 29" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.41_PM_zjbuwq", category: "filter-mansion", title: "Mansion Builders 30" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.42_PM_w16rdh", category: "filter-mansion", title: "Mansion Builders 31" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.42_PM_1_cl3v5q", category: "filter-mansion", title: "Mansion Builders 32" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.43_PM_xyxlju", category: "filter-mansion", title: "Mansion Builders 33" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.46_PM_ysc59f", category: "filter-mansion", title: "Mansion Builders 34" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.47_PM_fy6w3d", category: "filter-mansion", title: "Mansion Builders 35" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.47_PM_1_txdkhf", category: "filter-mansion", title: "Mansion Builders 36" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.48_PM_jsrw8y", category: "filter-mansion", title: "Mansion Builders 37" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.48_PM_1_svz2sp", category: "filter-mansion", title: "Mansion Builders 38" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.49_PM_mmom4t", category: "filter-mansion", title: "Mansion Builders 39" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.50_PM_l9cz5v", category: "filter-mansion", title: "Mansion Builders 40" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.53_PM_vwaqpo", category: "filter-mansion", title: "Mansion Builders 41" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.54_PM_lpkmwe", category: "filter-mansion", title: "Mansion Builders 42" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.54_PM_1_ifmh4b", category: "filter-mansion", title: "Mansion Builders 43" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.55_PM_wl5uml", category: "filter-mansion", title: "Mansion Builders 44" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.58_PM_mrnwkv", category: "filter-mansion", title: "Mansion Builders 45" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.56_PM_xcywge", category: "filter-mansion", title: "Mansion Builders 46" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.11.57_PM_foeyhf", category: "filter-mansion", title: "Mansion Builders 47" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.06_PM_wn2z4v", category: "filter-mansion", title: "Mansion Builders 48" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.07_PM_ias61z", category: "filter-mansion", title: "Mansion Builders 49" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.07_PM_1_yxn4hw", category: "filter-mansion", title: "Mansion Builders 50" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.08_PM_1_ehzrsh", category: "filter-mansion", title: "Mansion Builders 51" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.08_PM_lmyo1e", category: "filter-mansion", title: "Mansion Builders 52" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.08_PM_2_sx0yr0", category: "filter-mansion", title: "Mansion Builders 53" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.10_PM_1_fkck3k", category: "filter-mansion", title: "Mansion Builders 54" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.10_PM_vuhumz", category: "filter-mansion", title: "Mansion Builders 55" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.09_PM_ejmlv4", category: "filter-mansion", title: "Mansion Builders 56" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.10_PM_2_tpcbiv", category: "filter-mansion", title: "Mansion Builders 57" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.17_PM_fbzffq", category: "filter-mansion", title: "Mansion Builders 58" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.17_PM_1_pysscv", category: "filter-mansion", title: "Mansion Builders 59" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.20_PM_fcbtqv", category: "filter-mansion", title: "Mansion Builders 60" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.19_PM_ywaxqv", category: "filter-mansion", title: "Mansion Builders 61" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.11_PM_sawiwj", category: "filter-mansion", title: "Mansion Builders 62" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.21_PM_tiw8qg", category: "filter-mansion", title: "Mansion Builders 63" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.11_PM_1_yc08wc", category: "filter-mansion", title: "Mansion Builders 64" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.27_PM_ldqtrn", category: "filter-mansion", title: "Mansion Builders 65" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.22_PM_ltfta2", category: "filter-mansion", title: "Mansion Builders 66" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.23_PM_f4u2du", category: "filter-mansion", title: "Mansion Builders 67" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.31_PM_1_wdk8uz", category: "filter-mansion", title: "Mansion Builders 68" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.12_PM_t75e9z", category: "filter-mansion", title: "Mansion Builders 69" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.32_PM_reo7sg", category: "filter-mansion", title: "Mansion Builders 70" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.26_PM_2_bw3tq5", category: "filter-mansion", title: "Mansion Builders 71" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.26_PM_vuxdpb", category: "filter-mansion", title: "Mansion Builders 72" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.13_PM_xitfwq", category: "filter-mansion", title: "Mansion Builders 73" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.14_PM_ojwvlr", category: "filter-mansion", title: "Mansion Builders 74" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.27_PM_1_fo3qyt", category: "filter-mansion", title: "Mansion Builders 75" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.25_PM_vgzftq", category: "filter-mansion", title: "Mansion Builders 76" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.26_PM_1_g6cjul", category: "filter-mansion", title: "Mansion Builders 77" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.28_PM_1_vc8yoe", category: "filter-mansion", title: "Mansion Builders 78" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.30_PM_1_o50oeq", category: "filter-mansion", title: "Mansion Builders 79" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.15_PM_nd0gjf", category: "filter-mansion", title: "Mansion Builders 80" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.28_PM_o5zekp", category: "filter-mansion", title: "Mansion Builders 81" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.29_PM_2_ps3rvi", category: "filter-mansion", title: "Mansion Builders 82" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.29_PM_1_tt8xla", category: "filter-mansion", title: "Mansion Builders 83" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.16_PM_gmyypt", category: "filter-mansion", title: "Mansion Builders 84" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.31_PM_zdnorb", category: "filter-mansion", title: "Mansion Builders 85" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.29_PM_qem6n4", category: "filter-mansion", title: "Mansion Builders 86" },
-      { src: "https://res.cloudinary.com/dcuiulfdt/image/upload/f_auto,q_auto/v1/WhatsApp_Image_2025-06-01_at_8.12.30_PM_kbwxro", category: "filter-mansion", title: "Mansion Builders 87" },
-    ];
-
-    // Add the Mansion Builders filter to the portfolio filters
-    document.addEventListener('DOMContentLoaded', function() {
-      const portfolioFilters = document.getElementById('portfolio-filters');
-      if (portfolioFilters) {
-        portfolioFilters.innerHTML = `
-          <li class="filter-active" data-filter="*">All Images</li>
-          <li data-filter=".filter-app">Estuary Sarovar House Works</li>
-          <li data-filter=".filter-product">Customized Works</li>
-          <li data-filter=".filter-branding">Construction</li>
-          <li data-filter=".filter-books">Hotel and Apartments</li>
-          <li data-filter=".filter-mansion">Mansion Builders</li>
-        `;
+      try {
+        const response = await fetch(`/api/gallery?limit=${IMAGES_PER_PAGE}&offset=${currentOffset}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch gallery images');
+        }
+        const data = await response.json();
         
-        // Re-attach filter event listeners after updating the HTML
-        const filters = document.querySelectorAll('#portfolio-filters li');
-        filters.forEach(filter => {
+        if (append) {
+          images = [...images, ...(data.images || [])];
+        } else {
+          images = data.images || [];
+        }
+        
+        // Store categoryFolderMap from API
+        if (data.categoryFolderMap) {
+          categoryFolderMap = data.categoryFolderMap;
+        }
+        
+        hasMoreImages = data.hasMore || false;
+        currentOffset = data.offset + data.images.length;
+        
+        console.log(`Loaded ${data.images.length} images (Total: ${images.length}/${data.total})`);
+        
+        // Initialize or update gallery
+        if (!append) {
+          initializeGallery();
+        } else {
+          renderImages(currentFilter);
+        }
+
+        // Update Load More button
+        if (loadMoreBtn) {
+          if (hasMoreImages) {
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i> Load More';
+          } else {
+            loadMoreBtn.style.display = 'none';
+          }
+        }
+      } catch (error) {
+        console.error('Error loading gallery:', error);
+        // Fallback: show error message
+        const portfolioGrid = document.getElementById('portfolio-grid');
+        if (portfolioGrid && !append) {
+          portfolioGrid.innerHTML = `
+            <div class="col-12 text-center">
+              <p class="text-danger">Failed to load gallery images. Please try again later.</p>
+            </div>
+          `;
+        }
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    function initializeGallery() {
+      // Add filters to the portfolio
+      const portfolioFilters = document.getElementById('portfolio-filters');
+      if (portfolioFilters && Object.keys(categoryFolderMap).length > 0) {
+        // Use all categories from categoryFolderMap (ensures all folders show even if not in first 20 images)
+        let filtersHTML = '<li class="filter-active" data-filter="*">All Images</li>';
+        
+        Object.keys(categoryFolderMap).forEach(category => {
+          const folderName = categoryFolderMap[category];
+          const displayName = formatFolderName(folderName);
+          filtersHTML += `<li data-filter=".${category}">${displayName}</li>`;
+        });
+        portfolioFilters.innerHTML = filtersHTML;
+        
+        // Attach filter event listeners
+        const filterItems = document.querySelectorAll('#portfolio-filters li');
+        filterItems.forEach(filter => {
           filter.addEventListener('click', function () {
             const selectedFilter = this.getAttribute('data-filter');
+            currentFilter = selectedFilter; // Store current filter
             renderImages(selectedFilter);
-            filters.forEach(f => f.classList.remove('filter-active'));
+            filterItems.forEach(f => f.classList.remove('filter-active'));
             this.classList.add('filter-active');
           });
         });
+      }
+
+      // Initial render
+      renderImages();
+      
+      // Show load more button if there are more images
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn && hasMoreImages) {
+        loadMoreBtn.style.display = 'block';
+      }
+    }
+
+    // Load gallery images when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadGalleryImages();
+      
+      // Add Load More button click handler
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => loadGalleryImages(true));
       }
     });
 
@@ -411,9 +357,6 @@
         });
     }
 
-    // Initial render for all images
-    renderImages();
-
     // Filter functionality (this will be re-attached in DOMContentLoaded)
     const filters = document.querySelectorAll('#portfolio-filters li');
     filters.forEach(filter => {
@@ -438,6 +381,18 @@
     document.body.appendChild(modal);
 
     let currentImageIndex = 0;
+    
+    // Function to format folder names for display
+    function formatFolderName(folderPath) {
+      // Extract last part of folder path (e.g., "sai-photo/album/house-work" -> "house-work")
+      const folderName = folderPath.split('/').pop();
+      
+      // Convert hyphen-separated to Title Case
+      return folderName
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
     
     function openImageViewer(src, index) {
       const modal = document.getElementById('imageViewerModal');
