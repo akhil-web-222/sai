@@ -35,6 +35,36 @@
       cursor: pointer;
       color: coral;
     }
+    #loadMoreBtn {
+      background-color: #ffc451;
+      color: #151515;
+      border: none;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px 0 rgba(255, 196, 81, 0.3);
+      display: none;
+      margin: 0 auto;
+    }
+    #loadMoreBtn:hover {
+      background-color: #ffb520;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px 0 rgba(255, 196, 81, 0.5);
+    }
+    #loadMoreBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    #loadMoreContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
   </style>
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -134,6 +164,13 @@
           </ul>
           <div class="portfolio-grid  row min-h-100" data-aos="fade-up" data-aos-delay="200" id="portfolio-grid">
           </div>
+          
+          <!-- Load More Button -->
+          <div id="loadMoreContainer" class="mt-5 mb-4">
+            <button id="loadMoreBtn">
+              <i class="bi bi-arrow-down-circle"></i> Load More Images
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -228,33 +265,72 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script> -->
   <script>
-    // Fetch images dynamically from API instead of hardcoding
+    // Fetch images dynamically from API with pagination
     let images = [];
+    let currentOffset = 0;
+    const IMAGES_PER_PAGE = 20;
+    let hasMoreImages = true;
+    let isLoading = false;
+    let currentFilter = "*";
 
     // Fetch images from the API
-    async function loadGalleryImages() {
+    async function loadGalleryImages(append = false) {
+      if (isLoading || (!hasMoreImages && append)) return;
+      
+      isLoading = true;
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn) {
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Loading...';
+      }
+
       try {
-        const response = await fetch('/api/gallery');
+        const response = await fetch(`/api/gallery?limit=${IMAGES_PER_PAGE}&offset=${currentOffset}`);
         if (!response.ok) {
           throw new Error('Failed to fetch gallery images');
         }
         const data = await response.json();
-        images = data.images || [];
-        console.log(`Loaded ${images.length} images from Cloudinary`);
         
-        // Initialize gallery after images are loaded
-        initializeGallery();
+        if (append) {
+          images = [...images, ...(data.images || [])];
+        } else {
+          images = data.images || [];
+        }
+        
+        hasMoreImages = data.hasMore || false;
+        currentOffset = data.offset + data.images.length;
+        
+        console.log(`Loaded ${data.images.length} images (Total: ${images.length}/${data.total})`);
+        
+        // Initialize or update gallery
+        if (!append) {
+          initializeGallery();
+        } else {
+          renderImages(currentFilter);
+        }
+
+        // Update Load More button
+        if (loadMoreBtn) {
+          if (hasMoreImages) {
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i> Load More';
+          } else {
+            loadMoreBtn.style.display = 'none';
+          }
+        }
       } catch (error) {
         console.error('Error loading gallery:', error);
         // Fallback: show error message
         const portfolioGrid = document.getElementById('portfolio-grid');
-        if (portfolioGrid) {
+        if (portfolioGrid && !append) {
           portfolioGrid.innerHTML = `
             <div class="col-12 text-center">
               <p class="text-danger">Failed to load gallery images. Please try again later.</p>
             </div>
           `;
         }
+      } finally {
+        isLoading = false;
       }
     }
 
@@ -284,6 +360,7 @@
         filterItems.forEach(filter => {
           filter.addEventListener('click', function () {
             const selectedFilter = this.getAttribute('data-filter');
+            currentFilter = selectedFilter; // Store current filter
             renderImages(selectedFilter);
             filterItems.forEach(f => f.classList.remove('filter-active'));
             this.classList.add('filter-active');
@@ -293,11 +370,23 @@
 
       // Initial render
       renderImages();
+      
+      // Show load more button if there are more images
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn && hasMoreImages) {
+        loadMoreBtn.style.display = 'block';
+      }
     }
 
     // Load gallery images when page loads
     document.addEventListener('DOMContentLoaded', function() {
       loadGalleryImages();
+      
+      // Add Load More button click handler
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => loadGalleryImages(true));
+      }
     });
 
     // Generate portfolio grid dynamically

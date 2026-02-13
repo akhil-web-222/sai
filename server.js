@@ -58,7 +58,13 @@ async function startServer() {
   // API endpoint for gallery
   app.get('/api/gallery', async (req, res) => {
     try {
-      const folders = Object.keys(FOLDER_CATEGORY_MAP);
+      const limit = parseInt(req.query.limit) || 20; // Default 20 images per load
+      const offset = parseInt(req.query.offset) || 0;
+      const category = req.query.category; // Optional category filter
+      
+      const folders = category 
+        ? Object.keys(FOLDER_CATEGORY_MAP).filter(f => FOLDER_CATEGORY_MAP[f] === category)
+        : Object.keys(FOLDER_CATEGORY_MAP);
       
       // Fetch all folders in parallel
       const results = await Promise.all(
@@ -66,7 +72,7 @@ async function startServer() {
       );
 
       // Combine and map to categories
-      const images = [];
+      const allImages = [];
       const folderDisplayNames = {
         'sai-photo/album/house-work': 'House Work',
         'sai-photo/album/customized-work': 'Customized Work',
@@ -81,7 +87,7 @@ async function startServer() {
         const displayName = folderDisplayNames[folder] || folder;
         
         folderImages.forEach((img, idx) => {
-          images.push({
+          allImages.push({
             src: img.src,
             category: category,
             title: `${displayName} ${idx + 1}`,
@@ -93,9 +99,16 @@ async function startServer() {
         });
       });
 
+      // Apply pagination
+      const paginatedImages = allImages.slice(offset, offset + limit);
+      const hasMore = (offset + limit) < allImages.length;
+
       return res.status(200).json({
-        images,
-        total: images.length,
+        images: paginatedImages,
+        total: allImages.length,
+        offset: offset,
+        limit: limit,
+        hasMore: hasMore,
         folders: folders.length
       });
     } catch (error) {
@@ -106,6 +119,8 @@ async function startServer() {
       });
     }
   });
+
+  // Create Vite server in middleware mode
 
   // Create Vite server in middleware mode
   const vite = await createViteServer({
