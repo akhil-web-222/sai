@@ -73,28 +73,28 @@ async function startServer() {
 
       // Combine and map to categories
       const allImages = [];
-      const folderDisplayNames = {
-        'sai-photo/album/house-work': 'House Work',
-        'sai-photo/album/customized-work': 'Customized Work',
-        'sai-photo/album/construction-work': 'Construction',
-        'sai-photo/album/hotel-apartments': 'Hotel and Apartments',
-        'sai-photo/album/mansion-builders': 'Mansion Builders',
-      };
+      const categoryFolderMap = {}; // Map category to folder name
       
       folders.forEach((folder, index) => {
         const category = FOLDER_CATEGORY_MAP[folder];
         const folderImages = results[index];
-        const displayName = folderDisplayNames[folder] || folder;
+        const folderName = folder.split('/').pop(); // Get last part: "house-work"
+        
+        // Store folder name for this category
+        if (!categoryFolderMap[category]) {
+          categoryFolderMap[category] = folderName;
+        }
         
         folderImages.forEach((img, idx) => {
           allImages.push({
             src: img.src,
             category: category,
-            title: `${displayName} ${idx + 1}`,
+            title: `${folderName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} ${idx + 1}`,
             public_id: img.public_id,
             width: img.width,
             height: img.height,
-            format: img.format
+            format: img.format,
+            folderName: folderName
           });
         });
       });
@@ -109,7 +109,8 @@ async function startServer() {
         offset: offset,
         limit: limit,
         hasMore: hasMore,
-        folders: folders.length
+        folders: folders.length,
+        categoryFolderMap: categoryFolderMap
       });
     } catch (error) {
       console.error('Error fetching gallery:', error);

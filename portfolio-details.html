@@ -157,10 +157,7 @@
           <ul id="portfolio-filters" class="portfolio-filters isotope-filters responsive-filters" data-aos="fade-up"
             data-aos-delay="100">
             <li class="filter-active" data-filter="*">All Images</li>
-            <li data-filter=".filter-app">House Works</li>
-            <li data-filter=".filter-product">Customized Works</li>
-            <li data-filter=".filter-branding">Construction</li>
-            <li data-filter=".filter-books">Hotel and Apartments</li>
+            <!-- Dynamic filters will be generated from API categoryFolderMap -->
           </ul>
           <div class="portfolio-grid  row min-h-100" data-aos="fade-up" data-aos-delay="200" id="portfolio-grid">
           </div>
@@ -272,6 +269,7 @@
     let hasMoreImages = true;
     let isLoading = false;
     let currentFilter = "*";
+    let categoryFolderMap = {}; // Store category to folder name mapping
 
     // Fetch images from the API
     async function loadGalleryImages(append = false) {
@@ -295,6 +293,11 @@
           images = [...images, ...(data.images || [])];
         } else {
           images = data.images || [];
+        }
+        
+        // Store categoryFolderMap from API
+        if (data.categoryFolderMap) {
+          categoryFolderMap = data.categoryFolderMap;
         }
         
         hasMoreImages = data.hasMore || false;
@@ -337,21 +340,14 @@
     function initializeGallery() {
       // Add filters to the portfolio
       const portfolioFilters = document.getElementById('portfolio-filters');
-      if (portfolioFilters && images.length > 0) {
-        // Get unique categories
-        const categories = [...new Set(images.map(img => img.category))];
-        const categoryNames = {
-          'filter-app': 'Estuary Sarovar House Works',
-          'filter-product': 'Customized Works',
-          'filter-branding': 'Construction',
-          'filter-books': 'Hotel and Apartments',
-          'filter-mansion': 'Mansion Builders'
-        };
-
+      if (portfolioFilters && Object.keys(categoryFolderMap).length > 0) {
+        // Use all categories from categoryFolderMap (ensures all folders show even if not in first 20 images)
         let filtersHTML = '<li class="filter-active" data-filter="*">All Images</li>';
-        categories.forEach(category => {
-          const name = categoryNames[category] || category.replace('filter-', '').replace('-', ' ');
-          filtersHTML += `<li data-filter=".${category}">${name}</li>`;
+        
+        Object.keys(categoryFolderMap).forEach(category => {
+          const folderName = categoryFolderMap[category];
+          const displayName = formatFolderName(folderName);
+          filtersHTML += `<li data-filter=".${category}">${displayName}</li>`;
         });
         portfolioFilters.innerHTML = filtersHTML;
         
@@ -437,6 +433,18 @@
     document.body.appendChild(modal);
 
     let currentImageIndex = 0;
+    
+    // Function to format folder names for display
+    function formatFolderName(folderPath) {
+      // Extract last part of folder path (e.g., "sai-photo/album/house-work" -> "house-work")
+      const folderName = folderPath.split('/').pop();
+      
+      // Convert hyphen-separated to Title Case
+      return folderName
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
     
     function openImageViewer(src, index) {
       const modal = document.getElementById('imageViewerModal');
