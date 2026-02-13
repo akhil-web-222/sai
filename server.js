@@ -121,6 +121,43 @@ async function startServer() {
     }
   });
 
+  // Hero images endpoint
+  app.get('/api/hero', async (req, res) => {
+    try {
+      const heroFolder = 'sai-photo/hero';
+      console.log(`Fetching hero images from: ${heroFolder}`);
+      
+      const result = await cloudinary.api.resources({
+        type: 'upload',
+        prefix: heroFolder,
+        max_results: 10,
+        resource_type: 'image'
+      });
+
+      console.log(`Found ${result.resources.length} hero images`);
+
+      const images = result.resources.map(resource => ({
+        src: resource.secure_url.replace('/upload/', '/upload/f_auto,q_auto/'),
+        public_id: resource.public_id,
+        width: resource.width,
+        height: resource.height
+      }));
+
+      return res.status(200).json({
+        images: images,
+        total: images.length
+      });
+    } catch (error) {
+      console.error('Error fetching hero images:', error.message);
+      // Return empty array instead of error to prevent frontend issues
+      return res.status(200).json({
+        images: [],
+        total: 0,
+        error: error.message
+      });
+    }
+  });
+
   // Create Vite server in middleware mode
 
   // Create Vite server in middleware mode
