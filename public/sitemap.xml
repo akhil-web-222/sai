@@ -12,7 +12,7 @@
   
   <!-- Service Details - CRITICAL for AI Citations -->
   <url>
-    <loc>https://saiwoodtreats.com/service-details.html</loc>
+    <loc>https://saiwoodtreats.com/service-details</loc>
     <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
@@ -20,7 +20,7 @@
   
   <!-- Wood Supply - High Value Citation Page -->
   <url>
-    <loc>https://saiwoodtreats.com/wood-supply.html</loc>
+    <loc>https://saiwoodtreats.com/wood-supply</loc>
     <lastmod>2026-02-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
@@ -28,19 +28,20 @@
   
   <!-- Contact Page -->
   <url>
-    <loc>https://saiwoodtreats.com/contact.html</loc>
+    <loc>https://saiwoodtreats.com/contact</loc>
     <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
+    <priority>0.80</priority>
   </url>
-  
+
   <!-- Portfolio Details -->
   <url>
-    <loc>https://saiwoodtreats.com/portfolio-details.html</loc>
+    <loc>https://saiwoodtreats.com/portfolio-details</loc>
     <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
+    <priority>0.80</priority>
   </url>
+
   
   <!-- AI Context Files for Discovery -->
   <url>
