@@ -23,7 +23,8 @@ export default defineConfig({
         contact: resolve(__dirname, 'contact.html'),
         'portfolio-details': resolve(__dirname, 'portfolio-details.html'),
         'service-details': resolve(__dirname, 'service-details.html'),
-        'wood-supply': resolve(__dirname, 'wood-supply.html')
+        'wood-supply': resolve(__dirname, 'wood-supply.html'),
+        '404': resolve(__dirname, '404.html')
       },
       output: {
         assetFileNames: (assetInfo) => {
