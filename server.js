@@ -82,6 +82,8 @@ async function startServer() {
   const app = express();
   app.use(cors());
   app.use(express.json());
+  // Serve static assets (including footer.html) from the public folder
+  app.use(express.static(path.join(__dirname, 'public')));
 
   // API endpoint for gallery
   app.get('/api/gallery', async (req, res) => {
