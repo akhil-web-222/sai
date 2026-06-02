@@ -64,6 +64,20 @@ async function fetchCloudinaryFolder(folder) {
   }
 }
 
+// Simple memory cache for Cloudinary folders
+const folderCache = {};
+const CACHE_TTL = 1000 * 60 * 30; // 30 minutes
+
+async function fetchCloudinaryFolderCached(folder) {
+  const now = Date.now();
+  if (folderCache[folder] && (now - folderCache[folder].timestamp < CACHE_TTL)) {
+    return folderCache[folder].data;
+  }
+  const data = await fetchCloudinaryFolder(folder);
+  folderCache[folder] = { timestamp: now, data: data };
+  return data;
+}
+
 async function startServer() {
   const app = express();
   app.use(cors());
@@ -72,7 +86,7 @@ async function startServer() {
   // API endpoint for gallery
   app.get('/api/gallery', async (req, res) => {
     try {
-      const limit = parseInt(req.query.limit) || 20; // Default 20 images per load
+      const limit = parseInt(req.query.limit) || 30; // Default 30 images per load
       const offset = parseInt(req.query.offset) || 0;
       const category = req.query.category; // Optional category filter
       
@@ -80,38 +94,47 @@ async function startServer() {
         ? Object.keys(FOLDER_CATEGORY_MAP).filter(f => FOLDER_CATEGORY_MAP[f] === category)
         : Object.keys(FOLDER_CATEGORY_MAP);
       
-      // Fetch all folders in parallel
+      // Fetch all folders in parallel using cache
       const results = await Promise.all(
-        folders.map(folder => fetchCloudinaryFolder(folder))
+        folders.map(folder => fetchCloudinaryFolderCached(folder))
       );
 
       // Combine and map to categories
-      const allImages = [];
+      const categoryImagesList = [];
       const categoryFolderMap = {}; // Map category to folder name
       
       folders.forEach((folder, index) => {
-        const category = FOLDER_CATEGORY_MAP[folder];
+        const cat = FOLDER_CATEGORY_MAP[folder];
         const folderImages = results[index];
-        const folderName = folder.split('/').pop(); // Get last part: "house-work"
+        const folderName = folder.split('/').pop();
         
-        // Store folder name for this category
-        if (!categoryFolderMap[category]) {
-          categoryFolderMap[category] = folderName;
+        if (!categoryFolderMap[cat]) {
+          categoryFolderMap[cat] = folderName;
         }
         
-        folderImages.forEach((img, idx) => {
-          allImages.push({
-            src: img.src,
-            category: category,
-            title: `${folderName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} ${idx + 1}`,
-            public_id: img.public_id,
-            width: img.width,
-            height: img.height,
-            format: img.format,
-            folderName: folderName
-          });
-        });
+        const mapped = folderImages.map((img, idx) => ({
+          src: img.src,
+          category: cat,
+          title: `${folderName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')} ${idx + 1}`,
+          public_id: img.public_id,
+          width: img.width,
+          height: img.height,
+          format: img.format,
+          folderName: folderName
+        }));
+        categoryImagesList.push(mapped);
       });
+
+      // Interleave images so the initial load has a mix of all categories
+      const allImages = [];
+      const maxLen = Math.max(0, ...categoryImagesList.map(arr => arr.length));
+      for (let i = 0; i < maxLen; i++) {
+        for (let j = 0; j < categoryImagesList.length; j++) {
+          if (i < categoryImagesList[j].length) {
+            allImages.push(categoryImagesList[j][i]);
+          }
+        }
+      }
 
       // Apply pagination
       const paginatedImages = allImages.slice(offset, offset + limit);

@@ -223,7 +223,7 @@
     // Fetch images dynamically from API with pagination
     let images = [];
     let currentOffset = 0;
-    const IMAGES_PER_PAGE = 20;
+    const IMAGES_PER_PAGE = 30; // Increased to load more initially
     let hasMoreImages = true;
     let isLoading = false;
     let currentFilter = "*";
@@ -241,7 +241,13 @@
       }
 
       try {
-        const response = await fetch(`/api/gallery?limit=${IMAGES_PER_PAGE}&offset=${currentOffset}`);
+        let url = `/api/gallery?limit=${IMAGES_PER_PAGE}&offset=${currentOffset}`;
+        if (currentFilter !== '*') {
+          const category = currentFilter.replace('.', '');
+          url += `&category=${category}`;
+        }
+
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Failed to fetch gallery images');
         }
@@ -253,8 +259,8 @@
           images = data.images || [];
         }
         
-        // Store categoryFolderMap from API
-        if (data.categoryFolderMap) {
+        // Store categoryFolderMap from API only on initial load to keep all tabs
+        if (data.categoryFolderMap && Object.keys(categoryFolderMap).length === 0) {
           categoryFolderMap = data.categoryFolderMap;
         }
         
@@ -264,7 +270,7 @@
         console.log(`Loaded ${data.images.length} images (Total: ${images.length}/${data.total})`);
         
         // Initialize or update gallery
-        if (!append) {
+        if (!append && currentFilter === '*') {
           initializeGallery();
         } else {
           renderImages(currentFilter);
@@ -274,7 +280,8 @@
         if (loadMoreBtn) {
           if (hasMoreImages) {
             loadMoreBtn.disabled = false;
-            loadMoreBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i> Load More';
+            loadMoreBtn.innerHTML = '<i class="bi bi-arrow-down-circle"></i> Load More Images';
+            loadMoreBtn.style.display = 'block';
           } else {
             loadMoreBtn.style.display = 'none';
           }
@@ -310,26 +317,38 @@
         portfolioFilters.innerHTML = filtersHTML;
         
         // Attach filter event listeners
-        const filterItems = document.querySelectorAll('#portfolio-filters li');
-        filterItems.forEach(filter => {
-          filter.addEventListener('click', function () {
-            const selectedFilter = this.getAttribute('data-filter');
-            currentFilter = selectedFilter; // Store current filter
-            renderImages(selectedFilter);
-            filterItems.forEach(f => f.classList.remove('filter-active'));
-            this.classList.add('filter-active');
-          });
-        });
+        attachFilterEvents();
       }
 
       // Initial render
       renderImages();
-      
-      // Show load more button if there are more images
-      const loadMoreBtn = document.getElementById('loadMoreBtn');
-      if (loadMoreBtn && hasMoreImages) {
-        loadMoreBtn.style.display = 'block';
-      }
+    }
+
+    function attachFilterEvents() {
+      const filterItems = document.querySelectorAll('#portfolio-filters li');
+      filterItems.forEach(filter => {
+        filter.addEventListener('click', function () {
+          const selectedFilter = this.getAttribute('data-filter');
+          if (currentFilter !== selectedFilter) {
+            currentFilter = selectedFilter;
+            filterItems.forEach(f => f.classList.remove('filter-active'));
+            this.classList.add('filter-active');
+            
+            // Reset and fetch for this specific category
+            currentOffset = 0;
+            images = [];
+            hasMoreImages = true;
+            
+            // Show loading state in grid
+            const portfolioGrid = document.getElementById('portfolio-grid');
+            if (portfolioGrid) {
+              portfolioGrid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-warning" role="status"></div><p class="mt-2">Loading images...</p></div>';
+            }
+            
+            loadGalleryImages(false);
+          }
+        });
+      });
     }
 
     // Load gallery images when page loads
@@ -366,17 +385,6 @@
           portfolioGrid.innerHTML += itemHTML;
         });
     }
-
-    // Filter functionality (this will be re-attached in DOMContentLoaded)
-    const filters = document.querySelectorAll('#portfolio-filters li');
-    filters.forEach(filter => {
-      filter.addEventListener('click', function () {
-        const selectedFilter = this.getAttribute('data-filter');
-        renderImages(selectedFilter);
-        filters.forEach(f => f.classList.remove('filter-active'));
-        this.classList.add('filter-active');
-      });
-    });
 
     // Image viewer modal (your existing code remains the same)
     const modal = document.createElement('div');
