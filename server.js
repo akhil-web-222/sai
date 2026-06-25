@@ -8,6 +8,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { fileURLToPath } from 'url';
+import { FOLDER_CATEGORY_MAP } from './shared_config.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,14 +24,7 @@ cloudinary.config({
   secure: true
 });
 
-const FOLDER_CATEGORY_MAP = {
-  'sai-photo/album/house-work': 'filter-app',
-  'sai-photo/album/customized-work': 'filter-product',
-  'sai-photo/album/construction-work': 'filter-branding',
-  'sai-photo/album/hotel-apartments': 'filter-books',
-  'sai-photo/album/mansion-builders': 'filter-mansion',
-  'sai-photo/album/house work - 1': 'filter-house-work-1',
-};
+
 
 function toSizedUrl(url, width, quality = 'q_auto:eco') {
   return url.replace('/upload/', `/upload/f_auto,${quality},c_limit,w_${width}/`);
